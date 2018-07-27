@@ -22,7 +22,7 @@ class Solution:
             return None
         im = self.maxnums(nums)
         root = TreeNode(im[1])
-        root.left = self.constructMaximumBinaryTree(nums[0:(im[0]-1)])
+        root.left = self.constructMaximumBinaryTree(nums[0:(im[0])])
         root.right = self.constructMaximumBinaryTree(nums[(im[0]+1):])
         return root
 
