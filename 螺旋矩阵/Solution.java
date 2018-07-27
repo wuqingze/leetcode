@@ -12,7 +12,7 @@ class Solution {
         while(count<=total){
             switch(move){
                 case 'u':
-                    while(y>=0 && result[x][y] == 0){
+                    while(y>=0 && result[y][x] == 0){
                         result[y][x] = count;
                         count += 1;
                         y -= 1;
