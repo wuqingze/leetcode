@@ -1,30 +1,35 @@
+import java.util.Arrays;
+
 class Solution {
     public int[][] generateMatrix(int n) {
         int[][] result = new int[n][n];
         
-        char move = 'r';
-        int count = 1;
         int x = 0;
         int y = 0;
-        while(count<=n*n){
+        int count = 1;
+        int total  = n*n;
+        char move = 'r';
+        while(count<=total){
             switch(move){
                 case 'u':
-                    while(y>=0 && result[y][x] == 0){
+                    while(y>=0 && result[x][y] == 0){
                         result[y][x] = count;
                         count += 1;
                         y -= 1;
                     }
-                    move = 'r';
+                    y += 1;
                     x += 1;
+                    move = 'r';
                     break;
                 case 'd':
                     while(y<n && result[y][x] == 0){
                         result[y][x] = count;
                         count += 1;
-                        y += 1;
+                        y += 1;    
                     }
-                    move = 'l';
+                    y -= 1;
                     x -= 1;
+                    move = 'l';
                     break;
                 case 'l':
                     while(x>=0 && result[y][x] == 0){
@@ -32,8 +37,9 @@ class Solution {
                         count += 1;
                         x -= 1;
                     }
-                    move = 'u';
+                    x += 1;
                     y -= 1;
+                    move = 'u';
                     break;
                 case 'r':
                     while(x<n && result[y][x] == 0){
@@ -41,11 +47,16 @@ class Solution {
                         count += 1;
                         x += 1;
                     }
-                    move = 'd';
+                    x -= 1;
                     y += 1;
+                    move = 'd';
                     break;
-            }            
+            }
         }
         return result;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(Arrays.toString(new Solution().generateMatrix(3)));
     }
 }
