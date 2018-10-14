@@ -15,8 +15,8 @@ class Solution(object):
         ans = []
         for i in range(n-m):
             a = list(s[i:i+m])
-            t = sorted(list(s[i:i+m]))
-            t = ''.join(t)
+            # t = sorted(list(s[i:i+m]))
+            # t = ''.join(t)
             if t in s:
                ans.append(i)
             
