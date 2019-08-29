@@ -9,7 +9,11 @@ class Solution:
         if right < left:
             self.backtraking(ans, left, right+1,n,cur+')')
             
-    def generateParenthesis(self, n: int) -> List[str]:
+    def generateParenthesis(self, n):
         ans = []
         self.backtraking(ans,0,0,n,'')
         return ans
+
+if __name__ == "__main__":
+    s = Solution()
+    print(s.generateParenthesis(3))
