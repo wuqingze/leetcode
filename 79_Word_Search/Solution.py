@@ -6,7 +6,7 @@ class Solution:
         
         if l == len(word)-1:
             return True
-        
+        dp[i][j] = 1
         if i -1>-1 and dp[i-1][j] == -1:
             if self.ff(i-1,j,n,m,dp,l+1,word,board):
                 return True
