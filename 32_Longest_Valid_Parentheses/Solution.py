@@ -1,11 +1,11 @@
 class Solution:
     def longestValidParentheses(self, s):
         if None == s or '' == s:
-            return None
+            return 0
 
         n = len(s)
         if n == 1:
-            return None
+            return 0 
 
         stk = [[-1,')']]
         mx = 0
