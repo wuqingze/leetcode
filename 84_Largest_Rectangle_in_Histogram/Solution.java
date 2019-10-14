@@ -5,9 +5,9 @@ public class Solution {
         int len = height.length;
         Stack<Integer> s = new Stack<Integer>();
         int maxArea = 0;
-        for(int i = 0; i < len; i++){
-            // int h = (i == len ? 0 : height[i]);
-            int h = height[i];
+        for(int i = 0; i <= len; i++){
+            int h = (i == len ? 0 : height[i]);
+            // int h = height[i];
             if(s.isEmpty() || h >= height[s.peek()]){
                 s.push(i);
             }else{
