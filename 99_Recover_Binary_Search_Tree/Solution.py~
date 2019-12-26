@@ -1,0 +1,48 @@
+# Definition for a binary tree node.
+class TreeNode:
+     def __init__(self, x):
+         self.val = x
+         self.left = None
+         self.right = None
+
+class Solution:
+    def __init__(self):
+        self.firstNode = None
+        self.secondNode = None
+
+    def f(self, root, preNode):
+        if root == None:
+            return
+        self.f(root.left, preNode)
+        if self.firstNode == None and preNode.val >= root.val:
+            self.firstNode = root
+        if self.firstNode != None and preNode.val >= root.val:
+            self.secondNode = root
+
+        preNode = root
+        self.f(root.right, preNode)
+
+    def recoverTree(self, root):
+        if root == None:
+            return root
+
+        preNode = TreeNode(999999999999999999999999999999)
+        self.f(root, preNode)
+
+        temp = self.firstNode.val
+        self.firstNode.val = self.secondNode.val
+        self.secondNode.val = temp
+def inList(root):
+    if root == None:
+        return
+    inList(root.left)
+    print(root.val, end=',')
+    inList(root.right)
+
+s = Solution()
+root = TreeNode(1)
+root.left = TreeNode(3)
+root.left.right = TreeNode(2)
+
+s.recoverTree(root)
+inList(root)
