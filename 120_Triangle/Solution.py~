@@ -1,0 +1,23 @@
+class Solution:
+    def minimumTotal(self, triangle):
+        if triangle == None:
+            return 0
+
+        n = len(triangle)
+        if n == 0:
+            return 0
+        if n == 1:
+            return triangle[0][1]
+
+        dp = [i for i in triangle[-1]]
+        for i in range(n-2, -1, -1):
+            t = []
+            array = triangle[i]
+            m = len(array)
+            for j in range(n):
+                t.append(min(dp[j], dp[j+1])+array[j])
+            dp = t
+        return dp[0]
+s = Solution()
+triangle = [[2], [3,4], [6,5,7], [4,1, 8, 3]]
+print(s.minimumTotal(triangle))
