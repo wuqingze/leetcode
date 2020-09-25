@@ -7,11 +7,21 @@ using namespace std;
 class Solution{
     public:
         static int findLengthOfLCIS(vector<int> &nums){
-            int ans=0, anchor=0;
-            for(int i=0; i<nums.size();i++){
-                if(i>0 && nums[i-1] >=nums[i]) anchor = i;
-                ans = ans>i-anchor+1?ans:i-anchor+1;
+            if(nums.empty()) return 0;
+            int count = 1;
+            int index = 1;
+            int n = nums.size();
+            int ans = 1;
+            while(index<n){
+                if(nums[index] > nums[index-1]){
+                    count += 1;
+                }else{
+                    ans = ans>count?ans:count;
+                    count = 1;
+                }
+                index += 1;
             }
+            ans = ans>count?ans:count;
             return ans;
         }
 };
