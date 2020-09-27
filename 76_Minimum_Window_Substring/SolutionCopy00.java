@@ -50,6 +50,7 @@ class SolutionCopy00{
 
     public static void main(String[] args){
         System.out.println(SolutionCopy00.minWindow("ADOBECODEBANC", "ABC"));
+        System.out.println(SolutionCopy00.minWindow("iiBAC", "ABC"));
     }
 }
 
