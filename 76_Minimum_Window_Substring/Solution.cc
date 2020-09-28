@@ -33,7 +33,7 @@ class Solution{
                 }
                 r++;
             }
-            return ans[0]==-1?"":s.substr(ans[1], ans[2]);
+            return ans[0]==-1?"":s.substr(ans[1], ans[2]-ans[1]+1);
        }
 };
 
