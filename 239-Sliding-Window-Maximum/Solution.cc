@@ -1,43 +1,115 @@
 #include <iostream>
 #include <vector>
-#include <unordered_map>
+#include <stdlib.h>
 #include <sstream>
+#include <map>
+#include <algorithm>
 using namespace std;
+
+class Heap{
+    private:
+        int pos = 0;
+        int len;
+        vector<int> heap;
+        void maxHeap(int i){
+            if(i>=len) return;
+            int largest = i;
+            int l = 2*i + 1;
+            int r = 2*(i+1);
+            if(l<len && heap[l]>heap[i]) largest = l;
+            if(r<len && heap[r]>heap[i]) largest = r;
+
+            int t = heap[largest];
+            heap[largest] = heap[i];
+            heap[i] = t;
+            if(i!= largest) maxHeap(largest);
+        };
+
+        int _maxHeap(int i){
+            while(i>0){
+                int parent = (i-1)/2;
+                if(heap[i] > heap[parent]){
+                    int t = heap[i];
+                    heap[i] = heap[parent];
+                    heap[parent] = t;
+                }else{
+                    return i;
+                }
+                i = parent;
+            }
+            return i;
+        }
+
+     
+
+    public:
+        Heap(int l){
+            len = l;
+            while(l-->0) heap.push_back(0x80000000);
+        };
+
+        void insert(int val){
+            heap[pos] = val;
+            int index = _maxHeap(pos);
+            pos += 1;
+        };
+
+        int findIndex(int val){
+            for(int i=0;i<len;i++){if(heap[i] == val) return i;}
+            return -1;
+        }
+
+        int top(){ return heap[0];};
+        void remove(int val){
+            int index = findIndex(val);
+            while(index < len){
+                bool isLeaf = index>=len/2;
+                if(isLeaf){
+                    heap[index] = heap[len-1];
+                    _maxHeap(index);
+                    pos -= 1;
+                    break;
+                }else{
+                    int largest = 2*index+1;
+                    int right = 2*(index+1);
+                    if(right<len && heap[right] > heap[largest]) largest = right;
+                    heap[index] = heap[largest];
+                    index = largest;
+                }
+            }
+        };
+
+        bool check(){
+            for(int i=1;i<len;i++){
+                int parent = (i-1)/2;
+                if(heap[i]>heap[parent]){
+                    for_each(heap.begin(), heap.end(), [](int n){cout<<n<<" ";});
+                    cout<<endl<<"heap bad: "<<i<<endl;
+                    return false;
+                }
+            }
+            return true;
+        }
+};
 
 class Solution{
     public:
-        static int findMax(vector<int>& nums, int i, int j){
-            int ans = nums[i];
-            for(int k=i;k<=j;k++)
-                ans = ans>nums[k]?ans:nums[k];
-            return ans;
-        }
-
         static vector<int> maxSlidingWindow(vector<int>& nums, int k) {
             if(nums.empty()) return {};
-
-            unordered_map<int, int> window;
-            int mx = nums[0], l=0, r=0, n= nums.size();
+            Heap heap(k);
             vector<int> result;
-            for(;r<k;r++){
-                mx = mx>nums[r]?mx:nums[r];
-                window[nums[r]] = window.count(nums[r])?window[nums[r]]+1:1;
+            for(int i=0;i<k;i++){ 
+                heap.insert(nums[i]);
             }
-            result.push_back(mx);
-            window[nums[l]] -= 1;
-            int pre = nums[l];
-            l +=1;
+            result.push_back(heap.top());
+            int l=0, r=k, n = nums.size();
+//            heap.remove(nums[0]);
+
             while(r<n){
-                if( pre == mx && (!window.count(pre) || window[pre] == 0)){
-                    mx = findMax(nums, l, r);
-                }
-                if(nums[r]>=mx){
-                    mx = nums[r];
-                }
-                result.push_back(mx);
-                pre = nums[l];
-                window[nums[l]] -= 1;
-                window[nums[r]] = window.count(nums[r])?window[nums[r]]+1:1;
+                heap.remove(nums[l]);
+                heap.insert(nums[r]);
+                if(!heap.check()){ cout<<"l:"<<l<<",r:"<<r<<",nums[l]:"<<nums[l]<<", nums[r[:"<<nums[r]<<endl; return {};};
+                result.push_back(heap.top());
                 r++;
                 l++;
             }
