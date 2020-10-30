@@ -1,3 +1,4 @@
+
 #include <iostream>
 #include <sstream>
 #include <vector>
@@ -7,23 +8,28 @@ using namespace std;
 class Solution{
     public:
         static void nextPermutation(vector<int>& nums) {
-            int n=nums.size(), i=n-2;
-            while(i>=0 && nums[i]>=nums[i+1]) i--;
+            int n = nums.size();
+            if(n <= 1) return;
+
+            int i=n-2;
+            int j=n-1;
+            while(i>=0 && nums[i]>=nums[i+1]) i-=1;
             if(i>=0){
-                int j = n-1;
-                while(j>=0 && nums[j]<=nums[i]) j--;
-                int t = nums[i];
-                nums[i] = nums[j];
-                nums[j] = t;
+                while(nums[j]<=nums[i]) j-=1;
+                if(i<j){
+                    int t = nums[i];
+                    nums[i] = nums[j];
+                    nums[j] = t;
+                }
             }
-            i = i+1;
-            int j = n-1;
+
+            i=i+1, j=n-1;
             while(i<=j){
-                int t = nums[i];
+                int t= nums[i];
                 nums[i] = nums[j];
                 nums[j] = t;
-                i++;
-                j--;
+                i+=1;
+                j-=1;
             }
         }
 
