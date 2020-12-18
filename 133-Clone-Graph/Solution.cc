@@ -1,5 +1,6 @@
 #include <vector>
-#include <map>
+#include <unordered_map>
+#include <queue>
 #include <iostream>
 
 using namespace std;
@@ -24,20 +25,27 @@ public:
 
 class Solution {
 public:
-    Node* dfs(Node* node, map<Node*, Node*> &dp){
-        if(node == nullptr) return nullptr;
-        auto *result = new Node(node->val);
-        dp.insert({node, result});
-        for(auto n:node->neighbors){
-            if(dp.find(n) == dp.end()) result->neighbors.push_back(dfs(n, dp));
-            else result->neighbors.push_back(dp[n]);
-        }
-        return result;
-    }
 
     Node* cloneGraph(Node* node) {
-        map<Node*, Node*> dp;
-        return dfs(node, dp);
+        if(node == nullptr) return nullptr;
+
+        auto *result = new Node(node->val, {});
+        unordered_map<Node*, Node*> copies;
+        copies[node] = result;
+        queue<Node*> q;
+        q.push(node);
+        while(!q.empty()){
+            auto *cur = q.front();
+            q.pop();
+            for(auto *neighbor:cur->neighbors){
+                if(copies.find(neighbor) == copies.end()){
+                    copies[neighbor] = new Node(neighbor->val, {});
+                    q.push(neighbor);
+                }
+                copies[cur]->neighbors.push_back(copies[neighbor]);
+            }
+        }
+        return result;
     }
 };
 
