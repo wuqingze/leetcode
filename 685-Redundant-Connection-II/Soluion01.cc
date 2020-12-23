@@ -9,10 +9,13 @@ class Solution{
     public:
           vector<int> findRedundantDirectedConnection(vector<vector<int>>& edges) {
               int n = edges.size();
-              bool isdouble = false;
+              vector<int> parent(n+1, -1);
+              vector<int> depth(n+1, 0);
               vector<int> p1(n+1, -1);
               vector<int> p2(n+1, -1);
-              int index = -1;
+              int dindex = -1;
+              vector<int> looppair;
+              bool isdoubleparent = false;
 
               for(int i=0;i<n;i++){
                   auto edge = edges[i];
@@ -20,31 +23,23 @@ class Solution{
                       p1[edge[1]] = edge[0];
                       p2[edge[1]] = edge[0];
                   }else{
+                      isdoubleparent = true;
+                      dindex = edge[1];
                       p2[edge[1]] = edge[0];
-                      isdouble = true;
-                      index = edge[1];
-                      break;
                   }
+                  if(looppair.empty() && !unionRoot(parent, depth, edge[0], edge[1])) 
+                      looppair = edge;
               }
 
-              if(isdouble){
-                  vector<int> parent(n+1, -1);
-                  vector<int> depth(n+1, 0);
-                  for(auto edge:edges){
-                      if(!(edge[0] == p2[index] && edge[1] == index)){
-                          if(!unionRoot(parent, depth, edge[0], edge[1])) return {p1[index], index};
-                      }
-                  }
-                  return {p2[index], index}; 
+              if(isdoubleparent){
+                  auto parent_ = parent[looppair[0]] == -1?looppair[0]:parent[looppair[0]];
+                  auto parent1 = parent[p1[dindex]] == -1?p1[dindex]:parent[p1[dindex]];
+                  auto parent2 = parent[p2[dindex]] == -1?p2[dindex]:parent[p2[dindex]];
+                  if(parent_ == parent1 && parent_ == parent2) return {p2[dindex], dindex};
+                  if(parent_ == parent1) return {p1[dindex], dindex};
+                  else return {p2[dindex], dindex};
               }
-              else{
-                  vector<int> parent(n+1, -1);
-                  vector<int> depth(n+1, 0);
-                  for(auto edge:edges){
-                      if(!unionRoot(parent, depth, edge[0], edge[1])) return edge;
-                  }
-              }
-              return {};
+              else return looppair;
           }
     private:
         int findRoot(vector<int> parent, int index){
@@ -57,9 +52,9 @@ class Solution{
             auto jroot = findRoot(parent, j);
             if(iroot == jroot) return false;
 
-            if(depth[iroot] <depth[jroot]) parent[iroot] = jroot;
-            else if(depth[jroot] < depth[iroot]) parent[jroot] = iroot;
-            else { parent[iroot] = jroot; depth[jroot] += 1;}
+            if(depth[iroot] <depth[jroot]) parent[i] = jroot;
+            else if(depth[jroot] < depth[iroot]) parent[j] = iroot;
+            else { parent[i] = jroot; depth[jroot] += 1;}
             return true;
         }
 };
