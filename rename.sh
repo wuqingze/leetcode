@@ -26,7 +26,6 @@ do
     if [[ -d $dict && $dict =~ ^[0-9]+- ]]
     then
         t="$dict"
-        echo $t
         if [ '-' == ${t:1:1} ]
         then
             mv  $t '000'$t 
