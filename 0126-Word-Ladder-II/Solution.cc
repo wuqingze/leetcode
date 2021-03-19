@@ -72,6 +72,7 @@ public:
 };
 
 int main(){
+    set<string> tset({"hello", "good"});
     string line;
     Solution s;
     while(getline(cin, line)){
