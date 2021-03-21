@@ -1,0 +1,62 @@
+digraph structs {
+    node [shape=plaintext]
+    matrix0 [label=< boder="0"
+        <table cellspacing="0" border="1">
+            <tr>
+                <td bgcolor="#d9e8fb">X</td>
+                <td bgcolor="#d9e8fb">X</td>
+                <td bgcolor="#d9e8fb">X</td>
+                <td bgcolor="#d9e8fb">X</td>
+            </tr>
+            <tr>
+                <td bgcolor="#d9e8fb">X</td>
+                <td bgcolor="#ffe6cd">O</td>
+                <td bgcolor="#ffe6cd">O</td>
+                <td bgcolor="#d9e8fb">X</td>
+            </tr>
+            <tr>
+                <td bgcolor="#d9e8fb">X</td>
+                <td bgcolor="#d9e8fb">X</td>
+                <td bgcolor="#ffe6cd">O</td>
+                <td bgcolor="#d9e8fb">X</td>
+            </tr>
+            <tr>
+                <td bgcolor="#d9e8fb">X</td>
+                <td bgcolor="#ffe6cd">O</td>
+                <td bgcolor="#d9e8fb">X</td>
+                <td bgcolor="#d9e8fb">X</td>
+            </tr>
+        </table>
+    >];
+
+    matrix1 [label=<
+        <table cellspacing="0" border="1">
+            <tr>
+                <td bgcolor="#d9e8fb">X</td>
+                <td bgcolor="#d9e8fb">X</td>
+                <td bgcolor="#d9e8fb">X</td>
+                <td bgcolor="#d9e8fb">X</td>
+            </tr>
+            <tr>
+                <td bgcolor="#d9e8fb">X</td>
+                <td bgcolor="#d9e8fb">X</td>
+                <td bgcolor="#d9e8fb">X</td>
+                <td bgcolor="#d9e8fb">X</td>
+            </tr>
+            <tr>
+                <td bgcolor="#d9e8fb">X</td>
+                <td bgcolor="#d9e8fb">X</td>
+                <td bgcolor="#d9e8fb">X</td>
+                <td bgcolor="#d9e8fb">X</td>
+            </tr>
+            <tr>
+                <td bgcolor="#d9e8fb">X</td>
+                <td bgcolor="#ffe6cd">O</td>
+                <td bgcolor="#d9e8fb">X</td>
+                <td bgcolor="#d9e8fb">X</td>
+            </tr>
+        </table>
+    >];
+
+    matrix0 -> matrix1 [constraint=false];
+}
