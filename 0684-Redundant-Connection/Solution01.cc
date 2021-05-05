@@ -7,37 +7,53 @@ using namespace std;
 
 class UF{
 public:
-}
-;
+    vector<int> parent;
+    vector<int> rank;
+
+    UF(int n){
+        parent = vector<int>(n);
+        for(int i=0;i<n;i++) parent[i] = i;
+        rank = vector<int>(n, 1);
+    }
+
+    int root(int i){
+        if(i == parent[i]) return i;
+        parent[i] = root(parent[i]);
+        return parent[i];
+    }
+
+    bool connected(int i, int j){
+        return root(i) == root(j);
+    }
+
+    void merge(int i, int j){
+        int iroot = root(i);
+        int jroot = root(j);
+
+        if(rank[iroot]<=rank[jroot]){
+            parent[iroot] = jroot;
+        }else{
+            parent[jroot] = iroot;
+        }
+        if(rank[iroot] == rank[jroot]){
+            rank[jroot] += 1;
+        }
+    }
+
+};
+
 class Solution{
     public:
         vector<int> findRedundantConnection(vector<vector<int>>& edges) {
             int n = edges.size();
-            vector<int> nums(n+1, -1), rank(n+1, 0); 
-            for(auto edge:edges) 
-                if(!unionSet(nums, rank, edge[0], edge[1])) return edge;
-            return {};
-        }
-
-    private:
-        int findRoot(vector<int> &nums, int index){
-            while(nums[index] != -1) index = nums[index];
-            return index;
-        }
-
-        bool unionSet(vector<int> &nums, vector<int> &rank, int i, int j){
-            int iroot = findRoot(nums, i);
-            int jroot = findRoot(nums, j);
-            if(iroot == jroot) return false;
-            if(rank[iroot] < rank[jroot]){
-                nums[iroot] = jroot;
-            }else if(rank[iroot] > rank[jroot]){
-                nums[jroot] = iroot;
-            }else{
-                nums[iroot] = jroot;
-                rank[jroot] += 1;
+            UF unionfind(n+1);
+            for(auto &edge:edges){
+                if(unionfind.connected(edge[0], edge[1])){
+                    return edge;
+                }
+                unionfind.merge(edge[0], edge[1]);
             }
-            return true;
+            return {};
         }
 };
 
