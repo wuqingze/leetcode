@@ -1,4 +1,5 @@
 #include <iostream>
+#include <algorithm>
 #include <sstream>
 #include <vector>
 #include <map>
@@ -41,36 +42,36 @@ public:
     }
     
     vector<string> findItinerary(vector<vector<string>>& tickets) {
+        vector<pair<string, string>> tt;
         vector<string> ret;
+
         map<string, multiset<string>> g;
         int n = tickets.size();
-        for(int i=0;i<n;i++){
-            if(g.find(tickets[i][0]) == g.end()){
-                g[tickets[i][0]] = {tickets[i][1]};
+
+        for(auto ticket:tickets){
+            if(g.find(ticket[0]) == g.end()){
+                g[ticket[0]] = {ticket[1]};
             }else{
-                g[tickets[i][0]].insert(tickets[i][1]);
+                g[ticket[0]].insert(ticket[1]);
             }
         }
-        for(int i=0;i<n;i++){
-            auto iti = tickets[i];
-            ret.push_back(iti[0]);
-            ret.push_back(iti[1]);
-            auto tos = g[iti[0]];
-            if(tos.size() == 1){
-                g.erase(g.find(iti[0]));
-            }else{
-                g[iti[0]].erase(g[iti[0]].find(iti[1]));
-            }
-            bool t = f(g, iti[1], ret);
-            if(t){
-                break;
-            }else{
-                ret.pop_back();
-                ret.pop_back();
-                if(tos.size() == 1){
-                    g[iti[0]] = {iti[1]};
-                }else{
-                    g[iti[0]].insert(iti[1]);
+
+        auto tos = g["JFK"];
+        if(tos.size() == 1){
+            ret.push_back("JFK");
+            ret.push_back(*(tos.begin()));
+            g.erase(g.find("JFK"));
+            f(g, *(tos.begin()), ret);
+        }else{
+            ret.push_back("JFK");
+            for(auto itr=tos.begin();itr!=tos.end();itr++){
+                ret.push_back(*itr);
+                g["JFK"].erase(g["JFK"].find(*itr));
+                bool t = f(g, *itr, ret);
+                if(t) break;
+                else{
+                    ret.pop_back();
+                    g["JFK"].insert(*itr);
                 }
             }
         }
