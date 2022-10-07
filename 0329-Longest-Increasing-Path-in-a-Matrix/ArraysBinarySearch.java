@@ -1,6 +1,7 @@
 import java.util.*;
 class ArraysBinarySearch{
     public static void main(String[] args) {
-        Arrays.binarySearch(a, key)
+        System.out.println("hello world");
+        final int[] t = new int[]{1,2,3,4};
     }
 }
